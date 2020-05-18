@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="shortcut icon" href="../resources/favicon.ico" th:href="@{/static/favicon.ico}"/>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <title>Bootstrap</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/bootstrap.min.css}" rel="stylesheet">
+    <style type="text/css">
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        a:focus {
+            text-decoration: none;
+        }
+    </style>
+
+
+</head>
+<body background="../static/js/lo.png"
+      style="position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; text-align: left;">
+
+<div class="contentWrap">
+
+    <div class="row">
+        <div class="col-lg-4" style="text-align: center;height: 80px;background-color: snow;">
+
+            <img src="../static/js/logo.png" height="70%"/></div>
+        <div class="col-lg-8"
+             style="text-align: left;height: 80px;background-color: snow;font-size:40px;font-family: 幼圆">
+
+            <a href="" style="text-decoration: none;color: deepskyblue;display: block">欢迎来到松鼠图书馆,请登录！</a>
+
+        </div>
+    </div>
+    <div>
+
+        <div class="intro-containernew" style="padding-right: 60px;width:560px;font-size: 20px">
+
+
+            <div style="width: 280px;margin-left: 930px;">
+                <form class="el-form login-form el-form--lable-top" autocomplete="on" th:action="@{/reader/login}"
+                      method="post">
+                    <div class="form-group">
+                        <hr>
+                        <label for="readerid">请输入学号：</label>
+                        <input type="text" class="form-control" id="readerid" placeholder="学号" name="id"
+                               style="height: 33px" required="required" oninput="value=value.replace(/[^\d]/g,'')">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">请输入姓名：</label>
+                        <input type="text" class="form-control" id="name" placeholder="姓名" name="name"
+                               style="height: 33px" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">请输入密码：</label>
+                        <input type="password" class="form-control" id="password" placeholder="密码" name="pwd"
+                               style="height: 33px" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkword">请输入验证码：</label>
+                        <input type="text" value="" class="form-control" placeholder="请输入验证码（区分大小写）"
+                               style="height:33px;position: relative;font-size:12px;" id="checkword"
+                               required="required">
+                        <canvas id="canvas" width="100" height="43" onclick="dj()"
+                                style="border: 1px solid #ccc;border-radius: 5px;"></canvas>
+                    </div>
+                    <button type="submit" class="btn btn-default" onclick="sublim()" style="height: 30px;width: 50px">
+                        登录
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a th:href="@{/addReader}" style="color: black;font-size: 15px">注册</a>
+
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script th:src="@{/js/jquery-3.2.1.js}"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script th:src="@{/static/bootstrap.min.js}"></script>
+</body>
+<script>
+    var show_num = [];
+    draw(show_num);
+
+    function dj() {
+        draw(show_num);
+    }
+
+    function sublim() {
+        var val = document.getElementById("checkword").value;
+        var num = show_num.join("");
+        if (val == '') {
+            alert('请输入验证码！');
+        } else if (val == num) {
+
+            document.getElementById(".input-val").val('');
+            draw(show_num);
+
+        } else {
+            alert('验证码错误！\n你输入的是:  ' + val + "\n正确的是:  " + num + '\n请重新输入！');
+            document.getElementById("checkword").value = '';
+            draw(show_num);
+        }
+
+
+    }
+
+    function draw(show_num) {
+        var canvas_width = document.getElementById('canvas').clientWidth;
+        var canvas_height = document.getElementById('canvas').clientHeight;
+        var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+        var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+        canvas.width = canvas_width;
+        canvas.height = canvas_height;
+        var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0,q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m";
+        var aCode = sCode.split(",");
+        var aLength = aCode.length;//获取到数组的长度
+
+        for (var i = 0; i <= 3; i++) {
+            var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+            var deg = Math.random() * 30 * Math.PI / 180;//产生0~30之间的随机弧度
+            var txt = aCode[j];//得到随机的一个内容
+            show_num[i] = txt;
+            var x = 10 + i * 20;//文字在canvas上的x坐标
+            var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+            context.font = "bold 23px 微软雅黑";
+-
+            context.translate(x, y);
+            context.rotate(deg);
+
+            context.fillStyle = randomColor();
+            context.fillText(txt, 0, 0);
+
+            context.rotate(-deg);
+            context.translate(-x, -y);
+        }
+        for (var i = 0; i <= 5; i++) { //验证码上显示线条
+            context.strokeStyle = randomColor();
+            context.beginPath();
+            context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+            context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+            context.stroke();
+        }
+        for (var i = 0; i <= 30; i++) { //验证码上显示小点
+            context.strokeStyle = randomColor();
+            context.beginPath();
+            var x = Math.random() * canvas_width;
+            var y = Math.random() * canvas_height;
+            context.moveTo(x, y);
+            context.lineTo(x + 1, y + 1);
+            context.stroke();
+        }
+    }
+
+    function randomColor() {//得到随机的颜色值
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
+</script>
+</html>

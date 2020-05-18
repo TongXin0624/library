@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="shortcut icon" href="../resources/favicon.ico" th:href="@{/static/favicon.ico}"/>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/static/bootstrap.min.css}" rel="stylesheet">
+    <style type="text/css">
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        a:focus {
+            text-decoration: none;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4" style="text-align: center;height: 80px;background-color: #6f42c1;">
+
+            <img src="../static/js/logo.png" height="70%"/></div>
+        <div class="col-lg-8"
+             style="text-align: left;height: 80px;background-color: #6f42c1;font-size:40px;font-family: 幼圆">
+
+            <li href="" style="text-decoration: none;color: white;display: block">欢迎来到松鼠图书馆！</li>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2" style="height: 900px;background-color: #b3d7ff">
+            <div class="text-center" style="height: 50px;line-height: 50px">
+                <li href="" style="text-decoration: none;color: white;display: block">图书管理系统</li>
+            </div>
+            <div style="height: 1px;background-color: black;width: 100%"></div>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h5 class="panel-title text-center">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                               aria-expanded="true" aria-controls="collapseOne">
+                                图书管理
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse.in" role="tabpanel"
+                         aria-labelledby="headingOne">
+                        <ul class="list-group text-center">
+                            <a class="list-group-item" href="http://localhost:8080/addBook.html">增加图书</a>
+                            <a class="list-group-item" href="http://localhost:8080/book/findBook2">删除图书</a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h5 class="panel-title text-center">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                               href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                用户管理
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <ul class="list-group text-center">
+                            <a class="list-group-item" href="http://localhost:8080/reader/findReader">注销用户</a>
+                            <a class="list-group-item" href="#">添加管理员</a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading panel" role="tab" id="headingThree">
+                        <h5 class="panel-title text-center">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                               href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                退出登录
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel"
+                         aria-labelledby="headingThree">
+                        <ul class="list-group text-center">
+                            <a class="list-group-item" href="http://localhost:8080/loginIn">退出登录</a>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-10" style="height: 900px;background-color: #6495ED">
+
+            <table class="table table-striped table-dark table-hover">
+                <tr>
+                    <th scope="col">书号</th>
+                    <th scope="col">书名</th>
+                    <th scope="col">出版社</th>
+                    <th scope="col">图书状态</th>
+                    <th scope="col">借阅人学号</th>
+                    <th scope="col">借书时间</th>
+                    <th scope="col">操作</th>
+                </tr>
+                <tr th:each="b : ${list2}">
+                    <td th:text="${b.bookid}"></td>
+                    <td th:text="${b.bookname}"></td>
+                    <td th:text="${b.publisher}"></td>
+                    <!--<td th:text="${b.bookstate}"></td>-->
+
+                    <div>
+            <span th:if="${b.bookstate}=='1'">
+            <td th:text="可借阅"></td>
+            </span>
+                        <span th:if="${b.bookstate}=='0'">
+            <td th:text="已借出"></td>
+            </span>
+                    </div>
+                    <td th:text="${b.readerid}"></td>
+                    <td th:text="${b.borrowtime}"></td>
+
+                    <td>
+                        <a th:href="@{/book/deleteBook00(bookid=${b.bookid})}">删除</a>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script th:src="@{/js/jquery-3.2.1.js}"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script th:src="@{/static/bootstrap.min.js}"></script>
+</body>
+</html>
